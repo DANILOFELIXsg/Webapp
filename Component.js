@@ -9,8 +9,10 @@ sap.ui.define([
             manifest: "json"
       },
       init : function () {
+         
          // call the init function of the parent
          UIComponent.prototype.init.apply(this, arguments);
+
          // set data model
          var oData = {
             recipient : {
@@ -19,6 +21,20 @@ sap.ui.define([
          };
          var oModel = new JSONModel(oData);
          this.setModel(oModel);
-      }
+
+         // create the views based on the url/hash
+			this.getRouter().initialize();
+      },
+
+      getContentDensityClass : function () {
+			if (!this._sContentDensityClass) {
+				if (!Device.support.touch) {
+					this._sContentDensityClass = "sapUiSizeCompact";
+				} else {
+					this._sContentDensityClass = "sapUiSizeCozy";
+				}
+			}
+			return this._sContentDensityClass;
+		}
    });
 });
